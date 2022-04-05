@@ -1,8 +1,9 @@
+import sys
 import time
+import psutil
 
 
-
-f = open("case.txt","r")
+f = open("case5.txt","r")
 lines = f.readlines()
 input = []
 S1 = []
@@ -65,16 +66,16 @@ def Alignment_algo(x, y):
     n = len(y)
     array = [[0 for x in range(m+1)] for y in range(n+1)]
     for i in range(m + 1):
-        array[i][0] = i*beta
+        array[0][i] = i*beta
     for j in range(n + 1):
-        array[0][j] = j*beta
+        array[j][0] = j*beta
     for j in range(n + 1)[1:]:
         for i in range(m + 1)[1:]:
 
             array[j][i] = min(alpha[(x[i - 1], y[j - 1])] + array[j - 1][i - 1], 
                          beta + array[j][i - 1], 
                          beta + array[j - 1][i])
-    return array[m][n], array
+    return array[n][m], array
 
 def finding_pass(array, x, y):
     delta = 30
@@ -140,7 +141,7 @@ def finding_pass(array, x, y):
 
     return update_x, update_y
 
-def output(durations, x_string, y_string, cost):
+def output(durations, x_string, y_string, cost, memory):
     output_file = open("output.txt", "w")
     output_file.write(str(cost))
     output_file.write("\n")
@@ -149,17 +150,24 @@ def output(durations, x_string, y_string, cost):
     output_file.write(y_string)
     output_file.write("\n")
     output_file.write(str(durations))
+    output_file.write("\n")
+    output_file.write(str(memory))
 
 
     output_file.close()
 
+def process_memory():
+    process = psutil.Process()
+    memory_info = process.memory_info()
+    memory_consumed = int(memory_info.rss/1024)
+    return memory_consumed
 
 start_time = time.time()
 min_cost, array = Alignment_algo(s1,s2)
 x_string, y_string = finding_pass(array, s1, s2)
 end_time = time.time()
 duration = (end_time - start_time)*1000
+memory = process_memory()
 
-
-output(duration, x_string, y_string, min_cost)
+output(duration, x_string, y_string, min_cost, memory)
 
