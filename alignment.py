@@ -1,7 +1,7 @@
 import sys
 import time
 import psutil
-
+from compare import a, b
 
 f = open("case5.txt","r")
 lines = f.readlines()
@@ -33,8 +33,7 @@ print(S2)
 def generate_string(X):
     if len(X[0]) == 0:
         print("Please give a valid string")
-    current_string = X[0]
-    print(current_string)
+    current_string = X[0]   
     for i in range(1, len(X)):
         temp = current_string
         current_string = current_string[0:X[i] + 1] + temp + current_string[X[i] + 1:]
@@ -171,3 +170,5 @@ memory = process_memory()
 
 output(duration, x_string, y_string, min_cost, memory)
 
+print(x_string == a)
+print(y_string == b)
