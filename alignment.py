@@ -1,7 +1,6 @@
 import sys
 import time
 import psutil
-from compare import a, b
 
 f = open("case5.txt","r")
 lines = f.readlines()
@@ -169,6 +168,3 @@ duration = (end_time - start_time)*1000
 memory = process_memory()
 
 output(duration, x_string, y_string, min_cost, memory)
-
-print(x_string == a)
-print(y_string == b)
